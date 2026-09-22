@@ -43,8 +43,18 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Skill)
 class SkillAdmin(admin.ModelAdmin):
-    list_display = ("name", "category", "order")
+    list_display = ("thumb", "name", "category", "order")
+    list_display_links = ("name",)
     list_editable = ("category", "order")
+
+    @admin.display(description="Icono")
+    def thumb(self, obj):
+        if not obj.icon:
+            return "—"
+        return format_html(
+            '<img src="{}" style="height:24px;width:24px;object-fit:contain" alt="">',
+            obj.icon.url,
+        )
 
 
 admin.site.register(Tag)

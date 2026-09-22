@@ -22,7 +22,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class SkillSerializer(serializers.ModelSerializer):
     class Meta:
         model = Skill
-        fields = ["id", "name", "category"]
+        fields = ["id", "name", "category", "icon"]
 
 
 class SectionSerializer(serializers.ModelSerializer):
@@ -41,6 +41,8 @@ class SectionSerializer(serializers.ModelSerializer):
             ).data}
 
         if section.kind == Section.Kind.SKILLS:
-            return {"skills": SkillSerializer(Skill.objects.all(), many=True).data}
+            return {"skills": SkillSerializer(
+                Skill.objects.all(), many=True, context=self.context
+            ).data}
 
         return {}

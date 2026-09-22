@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 
 
 class SiteProfile(models.Model):
@@ -85,6 +86,14 @@ class Project(models.Model):
 class Skill(models.Model):
     name = models.CharField("Nombre", max_length=60)
     category = models.CharField("Categoría", max_length=60, blank=True)
+    icon = models.FileField(
+        "Icono",
+        upload_to="skills/",
+        blank=True,
+        null=True,
+        validators=[FileExtensionValidator(["svg", "png", "webp", "jpg", "jpeg"])],
+        help_text="SVG o PNG cuadrado. Recomendado: SVG.",
+    )
     order = models.PositiveIntegerField("Orden", default=0, db_index=True)
 
     class Meta:

@@ -64,7 +64,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 if not DEBUG:
-    SECURE_SSL_REDIRECT = False   # PythonAnywhere ya sirve HTTPS
+    SECURE_SSL_REDIRECT = False 
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     CSRF_TRUSTED_ORIGINS = [f"https://{h}" for h in ALLOWED_HOSTS if h]
