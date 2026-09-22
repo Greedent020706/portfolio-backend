@@ -103,3 +103,20 @@ class Skill(models.Model):
 
     def __str__(self):
         return self.name
+    
+class ContactMessage(models.Model):
+    name = models.CharField("Nombre", max_length=100)
+    email = models.EmailField("Correo")
+    message = models.TextField("Mensaje")
+    ip = models.GenericIPAddressField("IP", blank=True, null=True)
+    created_at = models.DateTimeField("Recibido", auto_now_add=True)
+    is_read = models.BooleanField("Leído", default=False)
+    email_sent = models.BooleanField("Correo enviado", default=False)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Mensaje de contacto"
+        verbose_name_plural = "Mensajes de contacto"
+
+    def __str__(self):
+        return f"{self.name} <{self.email}>"

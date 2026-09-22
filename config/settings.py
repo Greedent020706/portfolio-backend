@@ -141,11 +141,42 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+# --- Correo ---
+# En local se usa el backend de consola: los correos se imprimen en la terminal
+# de runserver. En producción, DJANGO_EMAIL_BACKEND=smtp activa el envío real por Gmail.
+_smtp_user = os.environ.get("DJANGO_EMAIL_USER", "")
+
+if os.environ.get("DJANGO_EMAIL_BACKEND") == "smtp":
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.smtp.EmailBackend",
+            "OPTIONS": {
+                "host": "smtp.gmail.com",
+                "port": 587,
+                "use_tls": True,
+                "username": _smtp_user,
+                "password": os.environ.get("DJANGO_EMAIL_PASSWORD", ""),
+                "timeout": 10,
+            },
+        },
+    }
+else:
+    MAILERS = {
+        "default": {
+            "BACKEND": "django.core.mail.backends.console.EmailBackend",
+        },
+    }
+
+DEFAULT_FROM_EMAIL = _smtp_user or "webmaster@localhost"
+CONTACT_RECIPIENT = os.environ.get("DJANGO_CONTACT_RECIPIENT", _smtp_user)
+
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+# --- API ---
+REST_FRAMEWORK = {
+    "DEFAULT_THROTTLE_RATES": {"contact": "5/hour"},
+    "NUM_PROXIES": 1,
+}

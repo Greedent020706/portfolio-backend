@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from portfolio.views import SiteView
+from portfolio.views import ContactView,SiteView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     path("api/site/", SiteView.as_view()),
+    path("api/contact/", ContactView.as_view()),
 ]
 
 if settings.DEBUG:

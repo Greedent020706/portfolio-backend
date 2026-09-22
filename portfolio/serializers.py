@@ -46,3 +46,9 @@ class SectionSerializer(serializers.ModelSerializer):
             ).data}
 
         return {}
+    
+class ContactSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    email = serializers.EmailField()
+    message = serializers.CharField(max_length=5000)
+    website = serializers.CharField(required=False, allow_blank=True)

@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import Project, Section, SiteProfile, Skill, Tag
-
+from .models import ContactMessage, Project, Section, SiteProfile, Skill, Tag
 
 @admin.register(SiteProfile)
 class SiteProfileAdmin(admin.ModelAdmin):
@@ -58,6 +57,18 @@ class SkillAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Tag)
+
+@admin.register(ContactMessage)
+class ContactMessageAdmin(admin.ModelAdmin):
+    list_display = ("created_at", "name", "email", "is_read", "email_sent")
+    list_filter = ("is_read", "email_sent")
+    list_editable = ("is_read",)
+    search_fields = ("name", "email", "message")
+    readonly_fields = ("name", "email", "message", "ip", "created_at", "email_sent")
+
+    def has_add_permission(self, request):
+        # Los mensajes solo llegan desde el formulario, no se crean a mano.
+        return False
 
 admin.site.site_header = "Panel del portfolio"
 admin.site.site_title = "Portfolio"
