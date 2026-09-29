@@ -8,6 +8,11 @@ class SiteProfile(models.Model):
     role = models.CharField("Rol", max_length=120)
     summary = models.TextField("Resumen", blank=True)
     email = models.EmailField("Correo", blank=True)
+    whatsapp = models.CharField(
+        "WhatsApp", max_length=20, blank=True,
+        help_text="Número con prefijo de país, sin espacios. Ej: +34600111222",
+    )
+    github = models.URLField("GitHub", blank=True, help_text="Ej: https://github.com/usuario")
     avatar = models.ImageField("Foto", upload_to="profile/", blank=True, null=True)
 
     class Meta:
